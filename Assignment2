@@ -1,0 +1,119 @@
+package assignment;
+
+public class Customer {
+    private int id;
+    private double balance;
+    private String firstName;
+    private String lastName;
+
+    // Constructor
+    public Customer(int id, double balance, String firstName, String lastName) {
+        this.id = id;
+        this.balance = balance;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    // Getters and setters for the attributes
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    // To string method to print customer details
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "ID=" + id +
+                ", Balance=" + balance +
+                ", First Name='" + firstName + '\'' +
+                ", Last Name='" + lastName + '\'' +
+                '}';
+    }
+}
+
+package assignment;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class CustomerApp {
+    public static void main(String[] args) {
+        // Create a list of customers
+        List<Customer> customers = new ArrayList<>();
+
+        // Add some customers to the list
+        customers.add(new Customer(1, 1000.50, "Alice", "Johnson"));
+        customers.add(new Customer(2, 1500.75, "Bob", "Smith"));
+        customers.add(new Customer(3, 2000.00, "Alice", "Williams"));
+        customers.add(new Customer(4, 500.25, "Alice", "Johnson"));
+        customers.add(new Customer(5, 750.80, "Bob", "Johnson"));
+
+        // Sort the customers using the custom comparator
+        Collections.sort(customers, new CustomerComparator());
+
+        // Print the sorted list of customers
+        for (Customer customer : customers) {
+            System.out.println(customer);
+        }
+    }
+}
+
+
+package assignment;
+
+import java.util.Comparator;
+
+public class CustomerComparator implements Comparator<Customer> {
+    @Override
+    public int compare(Customer c1, Customer c2) {
+        // Compare by First Name
+        int firstNameComparison = c1.getFirstName().compareTo(c2.getFirstName());
+        if (firstNameComparison != 0) {
+            return firstNameComparison;
+        }
+
+        // If First Name is the same, compare by Last Name
+        int lastNameComparison = c1.getLastName().compareTo(c2.getLastName());
+        if (lastNameComparison != 0) {
+            return lastNameComparison;
+        }
+
+        // If Last Name is also the same, compare by ID
+        int idComparison = Integer.compare(c1.getId(), c2.getId());
+        if (idComparison != 0) {
+            return idComparison;
+        }
+
+        // If ID is also the same, compare by Balance
+        return Double.compare(c1.getBalance(), c2.getBalance());
+    }
+}
